@@ -1,0 +1,46 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.0.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
+apply plugin: 'io.spring.dependency-management'
+
+jar {
+	baseName = 'demoTwo-service'
+	version = "${currentVersion}-${currentBuild}"
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka:1.2.0.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-actuator:1.4.1.RELEASE')
+    compile('org.springframework.cloud:spring-cloud-starter-feign:1.2.0.RELEASE')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.SR5"
+	}
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.3'
+}
