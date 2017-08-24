@@ -7,17 +7,21 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath ("se.transmode.gradle:gradle-docker:1.2")
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'application'
 apply plugin: 'spring-boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'docker'
+
+//IMPORTANT!
+applicationName = 'demotwo'
 
 jar {
-	baseName = 'demoTwo-service'
-	version = "${currentVersion}-${currentBuild}"
+	baseName = 'demotwo'
 }
 
 sourceCompatibility = 1.8
@@ -40,6 +44,20 @@ dependencyManagement {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.SR5"
 	}
 }
+
+task buildDocker(type: Docker) {
+  baseImage = 'java:8'
+  tag = 'demotwo'
+  addFile {
+    from jar
+    rename {'demotwo.jar'}
+  }
+  entryPoint(['java', '-jar', '/demotwo.jar'])
+  exposePort(9002)
+ 
+}
+
+buildDocker.dependsOn(build)
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '3.3'
