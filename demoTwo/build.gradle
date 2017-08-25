@@ -12,6 +12,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+//IMPORTANT!
 apply plugin: 'application'
 apply plugin: 'spring-boot'
 apply plugin: 'io.spring.dependency-management'
@@ -53,7 +54,6 @@ task buildDocker(type: Docker) {
     rename {'demotwo.jar'}
   }
   entryPoint(['java', '-jar', '/demotwo.jar'])
-  exposePort(9002)
  
 }
 

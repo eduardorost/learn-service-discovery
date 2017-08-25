@@ -5,7 +5,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "demoOne-service", configuration = FeignConfiguration.class)
+@FeignClient(value = "DEMOONE-SERVICE", configuration = FeignConfiguration.class)
 public interface DemoOneRestClient {
 
     @RequestMapping(value = "/v1/demo", method = RequestMethod.GET)

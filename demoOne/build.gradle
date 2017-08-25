@@ -7,17 +7,21 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    classpath ("se.transmode.gradle:gradle-docker:1.2")
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+//IMPORTANT!
+apply plugin: 'application'
 apply plugin: 'spring-boot'
-apply plugin: 'io.spring.dependency-management'
+apply plugin: 'docker'
+
+//IMPORTANT!
+applicationName = 'demoone'
 
 jar {
-	baseName = 'demoOne-service'
-	version = "${currentVersion}-${currentBuild}"
+	baseName = 'demoone'
 }
 
 sourceCompatibility = 1.8
@@ -40,7 +44,19 @@ dependencyManagement {
 	}
 }
 
-
 task wrapper(type: Wrapper) {
 	gradleVersion = '3.3'
 }
+
+task buildDocker(type: Docker) {
+  baseImage = 'java:8'
+  tag = 'demoone'
+  addFile {
+    from jar
+    rename {'demoone.jar'}
+  }
+  entryPoint(['java', '-jar', '/demoone.jar'])
+ 
+}
+
+buildDocker.dependsOn(build)

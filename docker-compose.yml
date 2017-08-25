@@ -1,20 +1,19 @@
-version: '3'
+eureka:
+  image: eureka
+  ports:
+    - "8761:8761"
 
-services:
-  # eureka:
-  #   build: .
-  #   image: eureka
-  #   ports:
-  #     - "9001:9001"
+demoone:
+  image: demoone
+  ports:
+    - "9001:9001"
+  links:
+    - eureka
 
-  # demoone:
-  #   build: .
-  #   image: demoone
-  #   ports:
-  #     - "9001:9001"
-
-  demotwo:
-    build: .
-    image: demotwo
-    ports:
-      - "9002:9002"
+demotwo:
+  image: demotwo
+  ports:
+    - "9002:9002"
+  links:
+    - eureka
+    - demoone
